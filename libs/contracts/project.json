@@ -1,0 +1,115 @@
+{
+  "name": "contracts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/contracts/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx hardhat clean", "npx hardhat compile"],
+        "cwd": "libs/contracts",
+        "parallel": false
+      }
+    },
+    "check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat check",
+        "cwd": "libs/contracts"
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat clean",
+        "cwd": "libs/contracts"
+      }
+    },
+    "compile": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat compile",
+        "cwd": "libs/contracts"
+      }
+    },
+    "console": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat console",
+        "cwd": "libs/contracts"
+      }
+    },
+    "coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat coverage",
+        "cwd": "libs/contracts"
+      }
+    },
+    "flatten": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat flatten",
+        "cwd": "libs/contracts"
+      }
+    },
+    "help": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat help",
+        "cwd": "libs/contracts"
+      }
+    },
+    "node": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat node",
+        "cwd": "libs/contracts"
+      }
+    },
+    "run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat run",
+        "cwd": "libs/contracts"
+      }
+    },
+    "hardhat": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat",
+        "cwd": "libs/contracts"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat test",
+        "cwd": "libs/contracts"
+      }
+    },
+    "typechain": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat typechain",
+        "cwd": "libs/contracts"
+      }
+    },
+    "verify": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat verify",
+        "cwd": "libs/contracts"
+      }
+    },
+    "size-contracts": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx hardhat size-contracts",
+        "cwd": "libs/contracts"
+      }
+    }
+  },
+  "tags": []
+}
