@@ -4,7 +4,40 @@ import { ETLSpec } from './types';
 import mockETLSpec from './mockETLSpec';
 import { parseEventDefiniton } from './utils';
 
+import { ScribeABI } from '@mole-network/contracts';
+
 const web3 = new Web3();
+
+type ChainIdAccountMap = Record<
+  number,
+  ReturnType<typeof web3.eth.accounts.privateKeyToAccount>
+>;
+
+// Add wallets for each chain
+// the env file should have keys formatted as `WALLET_PK_CHAIN_###`
+const CHAIN_ID_ACCOUNT = Object.entries(process.env)
+  .filter(([k]) => /WALLET_PK/.test(k))
+  .map(([k, v]) => [k.replace('WALLET_PK_CHAIN_', ''), v])
+  .reduce<ChainIdAccountMap>(
+    (chainIdAccountMap, [chainId, privateKey]) => ({
+      ...chainIdAccountMap,
+      [chainId]: web3.eth.accounts.privateKeyToAccount(privateKey),
+    }),
+    {}
+  );
+
+// Add scribe contracts for each chain
+// the env file should have keys formatted as `SCRIBE_ADDRESS_CHAIN_###`
+const CHAIN_ID_CONTRACT = Object.entries(process.env)
+  .filter(([k]) => /SCRIBE_ADDRESS/.test(k))
+  .map(([k, v]) => [k.replace('SCRIBE_ADDRESS_CHAIN_', ''), v])
+  .reduce<Record<number, string>>(
+    (chainIdAccountMap, [chainId, contractAddress]) => ({
+      ...chainIdAccountMap,
+      [chainId]: contractAddress,
+    }),
+    {}
+  );
 
 class Digger {
   web3Connections: Record<number, Web3> = {};
@@ -47,17 +80,66 @@ class Digger {
               data.data,
               indexed ? data.topics.slice(1) : data.topics
             );
+
             console.log(decoded);
-            mockETLSpec.handlers[event.handler](error, data, this.store);
+
+            const transformedData = mockETLSpec.handlers[event.handler]({
+              error,
+              rawData: data,
+              decodedData: decoded,
+              store: this.store,
+            });
+
+            if (transformedData !== undefined) {
+              this.sendToScribe(transformedData);
+            }
           }
         );
       });
     });
   }
+
+  async sendToScribe(transformedData) {
+    const chainId = this.spec.config.destination.chainId;
+    const scribeAddress = CHAIN_ID_CONTRACT[chainId];
+    const sendingAccount = CHAIN_ID_ACCOUNT[chainId];
+
+    if (!scribeAddress) {
+      console.log(`No scribe contract address found for chainId ${chainId}`);
+      return;
+    }
+
+    if (!sendingAccount) {
+      console.log(`No wallet address found for chainId ${chainId}`);
+      return;
+    }
+
+    const scribeContract = new this.web3Connections[chainId].eth.Contract(
+      ScribeABI,
+      scribeAddress
+    );
+
+    await scribeContract.methods
+      .submitValue(
+        this.spec.config.destination.address,
+        this.spec.config.destination.signature,
+        transformedData
+      )
+      .send({ from: sendingAccount.address })
+      .catch((e) => {
+        console.log(`Error writing data to Scribe: ${e.message}`);
+      });
+  }
 }
 
 (async () => {
-  console.log('Starting MoleNET...');
+  console.log(`
+    __  _______  __    _______   ______________
+   /  |/  / __ \\/ /   / ____/ | / / ____/_  __/   / \\
+  / /|_/ / / / / /   / __/ /  |/ / __/   / /     /___\\
+ / /  / / /_/ / /___/ /___/ /|  / /___  / /     ( ^.^ ) 
+/_/  /_/\\____/_____/_____/_/ |_/_____/ /_/      ( > < )
+`);
   try {
     const digger = new Digger(mockETLSpec);
     digger.start();

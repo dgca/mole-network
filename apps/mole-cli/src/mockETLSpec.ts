@@ -1,4 +1,4 @@
-import { ETLSpecConfig, ETLSpec } from './types';
+import { ETLSpecConfig, ETLSpec, Handler } from './types';
 
 const config: ETLSpecConfig = {
   sources: [
@@ -32,11 +32,11 @@ const config: ETLSpecConfig = {
   },
 };
 
-function handleSwap(error, data, store) {
+const handleSwap: Handler = ({ error, rawData, decodedData, store }) => {
   console.log(`I have been called ${store.get('count') || 1} times`);
   store.set('count', (store.get('count') || 1) + 1);
-  console.log(data);
-}
+  console.log(decodedData);
+};
 
 const spec: ETLSpec = {
   config,

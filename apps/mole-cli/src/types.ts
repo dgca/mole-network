@@ -16,10 +16,19 @@ export type ETLSpecConfig = {
   };
 };
 
+export type Handler = ({
+  error,
+  rawData,
+  decodedData,
+  store,
+}: {
+  error: any;
+  rawData: any;
+  decodedData: any;
+  store: Map<string, any>;
+}) => any;
+
 export type ETLSpec = {
   config: ETLSpecConfig;
-  handlers: Record<
-    string,
-    (error: any, data: any, store: Map<string, any>) => void
-  >;
+  handlers: Record<string, Handler>;
 };
