@@ -4,9 +4,7 @@ export type ETLSpecConfig = {
     chainId: number;
     address: string;
     events: Array<{
-      topic: string;
       definition: string;
-      parameters: Array<any>;
       handler: string;
     }>;
   }>;
