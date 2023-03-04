@@ -1,3 +1,7 @@
+import Web3 from 'web3';
+import type { Account } from 'web3-core';
+import { ethers } from 'ethers';
+
 export function parseEventDefiniton(event: string) {
   const normalized = event
     .trim()
@@ -33,5 +37,53 @@ export function parseEventDefiniton(event: string) {
     topic: `${start}${topicArgs}${end}`,
     parameters,
     indexed: paramDescriptors.some((item) => item.length === 3),
+  };
+}
+
+export function initWeb3() {
+  const web3 = new Web3();
+
+  // Add wallets for each chain
+  // the env file should have keys formatted as `WALLET_PK_CHAIN_###`
+  const ACCOUNT_BY_CHAIN_ID = Object.entries(process.env)
+    .filter(([k]) => /WALLET_PK/.test(k))
+    .map(([k, v]) => [k.replace('WALLET_PK_CHAIN_', ''), v])
+    .reduce<Record<string, Account>>(
+      (chainIdAccountMap, [chainId, privateKey]) => ({
+        ...chainIdAccountMap,
+        [chainId]: web3.eth.accounts.privateKeyToAccount(privateKey),
+      }),
+      {}
+    );
+
+  const PROVIDER_BY_CHAIN_ID = Object.entries(process.env)
+    .filter(([k]) => /RPC_HTTP/.test(k))
+    .map(([k, v]) => [k.replace('RPC_HTTP_CHAIN_', ''), v])
+    .reduce(
+      (chainIdAccountMap, [chainId, httpUrl]) => ({
+        ...chainIdAccountMap,
+        [chainId]: new ethers.providers.JsonRpcProvider(httpUrl),
+      }),
+      {}
+    );
+
+  // Add scribe contracts for each chain
+  // the env file should have keys formatted as `SCRIBE_ADDRESS_CHAIN_###`
+  const SCRIBE_CONTRACT_BY_CHAIN_ID = Object.entries(process.env)
+    .filter(([k]) => /SCRIBE_ADDRESS/.test(k))
+    .map(([k, v]) => [k.replace('SCRIBE_ADDRESS_CHAIN_', ''), v])
+    .reduce<Record<number, string>>(
+      (chainIdAccountMap, [chainId, contractAddress]) => ({
+        ...chainIdAccountMap,
+        [chainId]: contractAddress,
+      }),
+      {}
+    );
+
+  return {
+    web3,
+    ACCOUNT_BY_CHAIN_ID,
+    SCRIBE_CONTRACT_BY_CHAIN_ID,
+    PROVIDER_BY_CHAIN_ID,
   };
 }

@@ -1,3 +1,1 @@
-import ScribeABI from './artifacts/contracts/Scribe.sol/Scribe.json';
-
-export { ScribeABI };
+export * as typechain from './typechain-types';

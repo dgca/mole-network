@@ -2,42 +2,16 @@ import Web3 from 'web3';
 import { ETLSpec } from './types';
 
 import mockETLSpec from './mockETLSpec';
-import { parseEventDefiniton } from './utils';
+import { parseEventDefiniton, initWeb3 } from './utils';
 
-import { ScribeABI } from '@mole-network/contracts';
+import { typechain } from '@mole-network/contracts';
 
-const web3 = new Web3();
-
-type ChainIdAccountMap = Record<
-  number,
-  ReturnType<typeof web3.eth.accounts.privateKeyToAccount>
->;
-
-// Add wallets for each chain
-// the env file should have keys formatted as `WALLET_PK_CHAIN_###`
-const CHAIN_ID_ACCOUNT = Object.entries(process.env)
-  .filter(([k]) => /WALLET_PK/.test(k))
-  .map(([k, v]) => [k.replace('WALLET_PK_CHAIN_', ''), v])
-  .reduce<ChainIdAccountMap>(
-    (chainIdAccountMap, [chainId, privateKey]) => ({
-      ...chainIdAccountMap,
-      [chainId]: web3.eth.accounts.privateKeyToAccount(privateKey),
-    }),
-    {}
-  );
-
-// Add scribe contracts for each chain
-// the env file should have keys formatted as `SCRIBE_ADDRESS_CHAIN_###`
-const CHAIN_ID_CONTRACT = Object.entries(process.env)
-  .filter(([k]) => /SCRIBE_ADDRESS/.test(k))
-  .map(([k, v]) => [k.replace('SCRIBE_ADDRESS_CHAIN_', ''), v])
-  .reduce<Record<number, string>>(
-    (chainIdAccountMap, [chainId, contractAddress]) => ({
-      ...chainIdAccountMap,
-      [chainId]: contractAddress,
-    }),
-    {}
-  );
+const {
+  web3,
+  ACCOUNT_BY_CHAIN_ID,
+  SCRIBE_CONTRACT_BY_CHAIN_ID,
+  PROVIDER_BY_CHAIN_ID,
+} = initWeb3();
 
 class Digger {
   web3Connections: Record<number, Web3> = {};
@@ -81,17 +55,15 @@ class Digger {
               indexed ? data.topics.slice(1) : data.topics
             );
 
-            console.log(decoded);
-
-            const transformedData = mockETLSpec.handlers[event.handler]({
+            const { payload } = mockETLSpec.handlers[event.handler]({
               error,
               rawData: data,
               decodedData: decoded,
               store: this.store,
             });
 
-            if (transformedData !== undefined) {
-              this.sendToScribe(transformedData);
+            if (payload) {
+              this.sendToScribe(payload);
             }
           }
         );
@@ -99,10 +71,11 @@ class Digger {
     });
   }
 
-  async sendToScribe(transformedData) {
+  async sendToScribe(payload) {
+    console.log({ payload });
     const chainId = this.spec.config.destination.chainId;
-    const scribeAddress = CHAIN_ID_CONTRACT[chainId];
-    const sendingAccount = CHAIN_ID_ACCOUNT[chainId];
+    const sendingAccount = ACCOUNT_BY_CHAIN_ID[chainId];
+    const scribeAddress = SCRIBE_CONTRACT_BY_CHAIN_ID[chainId];
 
     if (!scribeAddress) {
       console.log(`No scribe contract address found for chainId ${chainId}`);
@@ -114,21 +87,18 @@ class Digger {
       return;
     }
 
-    const scribeContract = new this.web3Connections[chainId].eth.Contract(
-      ScribeABI,
-      scribeAddress
-    );
-
-    await scribeContract.methods
-      .submitValue(
+    try {
+      await typechain.Scribe__factory.connect(
+        scribeAddress,
+        PROVIDER_BY_CHAIN_ID[chainId].getSigner(sendingAccount.address)
+      ).submitValue(
         this.spec.config.destination.address,
         this.spec.config.destination.signature,
-        transformedData
-      )
-      .send({ from: sendingAccount.address })
-      .catch((e) => {
-        console.log(`Error writing data to Scribe: ${e.message}`);
-      });
+        payload
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
