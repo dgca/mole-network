@@ -1,11 +1,26 @@
-import { HardhatUserConfig } from 'hardhat/config';
-import '@nomicfoundation/hardhat-toolbox';
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+
+const networks = (() => {
+  if (!process.env.ALCHEMY_MUMBAI_URL || !process.env.SCRIBE_DEPLOYER_PK) {
+    return {};
+  }
+
+  return {
+    mumbai: {
+      url: process.env.ALCHEMY_MUMBAI_URL,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      accounts: [process.env.SCRIBE_DEPLOYER_PK!],
+    },
+  };
+})();
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.17',
+  solidity: "0.8.17",
   paths: {
-    root: './src',
+    root: "./src",
   },
+  networks,
 };
 
 export default config;
