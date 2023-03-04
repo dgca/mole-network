@@ -1,29 +1,27 @@
-import { Network } from "alchemy-sdk";
-
-export type ExtractionSpec = {
-	chain_id?: string;
-	source_type: "block" | "block-transactions" | "block-transactions-contract" | "nft-prices";
-	block_start?: number;
-	block_end?: number;
-} | {
-	source_type: "nft-prices";
-	collection_address: string;
+export type ETLSpecConfig = {
+  sources: Array<{
+    type: 'evm';
+    chainId: number;
+    address: string;
+    events: Array<{
+      topic: string;
+      definition: string;
+      parameters: Array<any>;
+      handler: string;
+    }>;
+  }>;
+  destination: {
+    type: 'evm';
+    chainId: number;
+    address: string;
+    signature: string;
+  };
 };
 
-export type EventSpec = {
-	block_start?: number;
-	block_end?: number;
-	chain_id?: Network;
-	contract_id?: string;
-	extract: ExtractionSpec[];
-	event: string;
-	handler: string;
+export type ETLSpec = {
+  config: ETLSpecConfig;
+  handlers: Record<
+    string,
+    (error: any, data: any, store: Map<string, any>) => void
+  >;
 };
-
-export type ETLSpecification = {
-	chain_id: Network;
-	contract_id: string;
-	target_contract_id: string;
-	events: EventSpec[];
-	handlers: string;
-}
