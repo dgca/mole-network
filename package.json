@@ -6,8 +6,6 @@
   "private": true,
   "dependencies": {
     "@nrwl/next": "15.8.3",
-    "alchemy-sdk": "^2.5.0",
-    "axios": "^1.0.0",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -33,7 +31,6 @@
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
-    "assemblyscript": "^0.27.0",
     "babel-jest": "^29.4.1",
     "cypress": "^12.2.0",
     "esbuild": "^0.17.5",
