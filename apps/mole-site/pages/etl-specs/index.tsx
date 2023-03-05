@@ -257,7 +257,12 @@ export const handlers: Handlers = {
 
               <Text fontSize="lg">
                 With these two pieces, <Code>config</Code> and&nbsp;
-                <Code>handlers</Code>, the Data Reporter is ready to run.
+                <Code>handlers</Code>, the Data Reporter is ready to run with
+                the command:
+                <br />
+                <Code>
+                  nx serve mole-cli --args=&quot;--spec=spec-name-here&quot;
+                </Code>
               </Text>
             </Stack>
           </Stack>

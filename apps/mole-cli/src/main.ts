@@ -103,17 +103,19 @@ class Digger {
   }
 
   async sendToScribe(payload, destination: Destination) {
+    console.log('Attempting to scribe...', payload, destination);
+
     const chainId = destination.chainId;
     const sendingAccount = ACCOUNT_BY_CHAIN_ID[chainId];
     const scribeAddress = SCRIBE_CONTRACT_BY_CHAIN_ID[chainId];
 
     if (!scribeAddress) {
-      console.log(`No scribe contract address found for chainId ${chainId}`);
+      console.error(`No scribe contract address found for chainId ${chainId}`);
       return;
     }
 
     if (!sendingAccount) {
-      console.log(`No wallet address found for chainId ${chainId}`);
+      console.error(`No wallet address found for chainId ${chainId}`);
       return;
     }
 
@@ -122,8 +124,9 @@ class Digger {
         scribeAddress,
         PROVIDER_BY_CHAIN_ID[chainId].getSigner(sendingAccount.address)
       ).submitValue(destination.address, destination.signature, payload);
+      console.log('Success!');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }
