@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { MockDestination } from "./MockDestination";
-export type { MockUniswapDestination } from "./MockUniswapDestination";
+export type { MockMessenger } from "./MockMessenger";
+export type { MockTellorProxy } from "./MockTellorProxy";

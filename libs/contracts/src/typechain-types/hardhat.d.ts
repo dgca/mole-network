@@ -17,9 +17,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockDestination__factory>;
     getContractFactory(
-      name: "MockUniswapDestination",
+      name: "MockMessenger",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockUniswapDestination__factory>;
+    ): Promise<Contracts.MockMessenger__factory>;
+    getContractFactory(
+      name: "MockTellorProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockTellorProxy__factory>;
     getContractFactory(
       name: "Scribe",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -31,10 +35,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MockDestination>;
     getContractAt(
-      name: "MockUniswapDestination",
+      name: "MockMessenger",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.MockUniswapDestination>;
+    ): Promise<Contracts.MockMessenger>;
+    getContractAt(
+      name: "MockTellorProxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockTellorProxy>;
     getContractAt(
       name: "Scribe",
       address: string,

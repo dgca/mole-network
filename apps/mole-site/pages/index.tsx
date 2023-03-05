@@ -81,7 +81,7 @@ export function Index() {
           </Box>
           <VStack alignItems="stretch" justifyContent="center">
             <Text fontSize={heroTextSize} mb="4">
-              Mole Network is an interchain, cross-chain, and cross-network
+              Mole Network is an intrachain, cross-chain, and cross-network
               communication system that lets developers capture, manipulate, and
               store event data in a number of ways. It can act as an oracle,
               indexer, cross-chain bridge, and more.

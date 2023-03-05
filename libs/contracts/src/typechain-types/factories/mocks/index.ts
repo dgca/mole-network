@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export { MockDestination__factory } from "./MockDestination__factory";
-export { MockUniswapDestination__factory } from "./MockUniswapDestination__factory";
+export { MockMessenger__factory } from "./MockMessenger__factory";
+export { MockTellorProxy__factory } from "./MockTellorProxy__factory";

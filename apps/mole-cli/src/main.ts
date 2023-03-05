@@ -4,12 +4,7 @@ import { parseEventDefiniton, initWeb3 } from './utils';
 
 import { typechain } from '@mole-network/contracts';
 
-const {
-  web3,
-  ACCOUNT_BY_CHAIN_ID,
-  SCRIBE_CONTRACT_BY_CHAIN_ID,
-  PROVIDER_BY_CHAIN_ID,
-} = initWeb3();
+const { web3, WALLET_BY_CHAIN_ID, SCRIBE_CONTRACT_BY_CHAIN_ID } = initWeb3();
 
 class Digger {
   spec: ETLSpec;
@@ -55,7 +50,7 @@ class Digger {
             const decoded = web3.eth.abi.decodeLog(
               parameters,
               data.data,
-              indexed ? data.topics.slice(1) : data.topics
+              indexed ? data.topics?.slice(1) : data.topics
             );
 
             const handlerResponse = this.spec.handlers[event.handler]({
@@ -106,7 +101,7 @@ class Digger {
     console.log('Attempting to scribe...', payload, destination);
 
     const chainId = destination.chainId;
-    const sendingAccount = ACCOUNT_BY_CHAIN_ID[chainId];
+    const scribeWallet = WALLET_BY_CHAIN_ID[chainId];
     const scribeAddress = SCRIBE_CONTRACT_BY_CHAIN_ID[chainId];
 
     if (!scribeAddress) {
@@ -114,7 +109,7 @@ class Digger {
       return;
     }
 
-    if (!sendingAccount) {
+    if (!scribeWallet) {
       console.error(`No wallet address found for chainId ${chainId}`);
       return;
     }
@@ -122,7 +117,7 @@ class Digger {
     try {
       await typechain.Scribe__factory.connect(
         scribeAddress,
-        PROVIDER_BY_CHAIN_ID[chainId].getSigner(sendingAccount.address)
+        scribeWallet
       ).submitValue(destination.address, destination.signature, payload);
       console.log('Success!');
     } catch (error) {

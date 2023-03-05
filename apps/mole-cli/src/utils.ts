@@ -1,5 +1,4 @@
 import Web3 from 'web3';
-import type { Account } from 'web3-core';
 import { ethers } from 'ethers';
 
 export function parseEventDefiniton(event: string) {
@@ -43,26 +42,26 @@ export function parseEventDefiniton(event: string) {
 export function initWeb3() {
   const web3 = new Web3();
 
-  // Add wallets for each chain
-  // the env file should have keys formatted as `WALLET_PK_CHAIN_###`
-  const ACCOUNT_BY_CHAIN_ID = Object.entries(process.env)
-    .filter(([k]) => /WALLET_PK/.test(k))
-    .map(([k, v]) => [k.replace('WALLET_PK_CHAIN_', ''), v])
-    .reduce<Record<string, Account>>(
-      (chainIdAccountMap, [chainId, privateKey]) => ({
+  const PROVIDER_BY_CHAIN_ID = Object.entries(process.env)
+    .filter(([k]) => /RPC_HTTP/.test(k))
+    .map(([k, v]) => [k.replace('RPC_HTTP_CHAIN_', ''), v])
+    .reduce<Record<string, ethers.providers.JsonRpcProvider>>(
+      (chainIdAccountMap, [chainId, httpUrl]) => ({
         ...chainIdAccountMap,
-        [chainId]: web3.eth.accounts.privateKeyToAccount(privateKey),
+        [chainId]: new ethers.providers.JsonRpcProvider(httpUrl),
       }),
       {}
     );
 
-  const PROVIDER_BY_CHAIN_ID = Object.entries(process.env)
-    .filter(([k]) => /RPC_HTTP/.test(k))
-    .map(([k, v]) => [k.replace('RPC_HTTP_CHAIN_', ''), v])
-    .reduce(
-      (chainIdAccountMap, [chainId, httpUrl]) => ({
+  // Add wallets for each chain
+  // the env file should have keys formatted as `WALLET_PK_CHAIN_###`
+  const WALLET_BY_CHAIN_ID = Object.entries(process.env)
+    .filter(([k]) => /WALLET_PK/.test(k))
+    .map(([k, v]) => [k.replace('WALLET_PK_CHAIN_', ''), v])
+    .reduce<Record<string, ethers.Wallet>>(
+      (chainIdAccountMap, [chainId, privateKey]) => ({
         ...chainIdAccountMap,
-        [chainId]: new ethers.providers.JsonRpcProvider(httpUrl),
+        [chainId]: new ethers.Wallet(privateKey, PROVIDER_BY_CHAIN_ID[chainId]),
       }),
       {}
     );
@@ -82,7 +81,7 @@ export function initWeb3() {
 
   return {
     web3,
-    ACCOUNT_BY_CHAIN_ID,
+    WALLET_BY_CHAIN_ID,
     SCRIBE_CONTRACT_BY_CHAIN_ID,
     PROVIDER_BY_CHAIN_ID,
   };

@@ -24,8 +24,8 @@ export const config: ETLSpecConfig = {
             `,
             handler: 'handleSwap',
             destination: {
-              chainId: 80001,
-              address: '',
+              chainId: 8453,
+              address: '0x2FEdc8B2C27Dc2916ecE1dA5c16dC92C9858A767',
               signature: 'handleReceive(bytes)',
             },
           },
@@ -39,9 +39,9 @@ export const config: ETLSpecConfig = {
         handler: 'handleApi',
         rate: 10 * 60 * 1000,
         destination: {
-          chainId: 80001,
-          address: '',
-          signature: 'handleReceiveApi(bytes)',
+          chainId: 8453,
+          address: '0x2FEdc8B2C27Dc2916ecE1dA5c16dC92C9858A767',
+          signature: 'handleWebApi(bytes)',
         },
       },
     ],

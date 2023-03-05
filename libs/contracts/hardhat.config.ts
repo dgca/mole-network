@@ -2,7 +2,11 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 
 const networks = (() => {
-  if (!process.env.ALCHEMY_MUMBAI_URL || !process.env.SCRIBE_DEPLOYER_PK) {
+  if (
+    !process.env.ALCHEMY_MUMBAI_URL ||
+    !process.env.SCRIBE_DEPLOYER_PK ||
+    !process.env.RPC_HTTP_CHAIN_8453
+  ) {
     return {};
   }
 
@@ -13,7 +17,7 @@ const networks = (() => {
       accounts: [process.env.SCRIBE_DEPLOYER_PK!],
     },
     base: {
-      url: "https://goerli.base.org",
+      url: process.env.RPC_HTTP_CHAIN_8453,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       accounts: [process.env.SCRIBE_DEPLOYER_PK!],
     },

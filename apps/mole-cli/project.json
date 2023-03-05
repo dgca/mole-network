@@ -30,7 +30,7 @@
         }
       }
     },
-    "serve": {
+    "start": {
       "executor": "@nrwl/js:node",
       "options": {
         "buildTarget": "mole-cli:build"

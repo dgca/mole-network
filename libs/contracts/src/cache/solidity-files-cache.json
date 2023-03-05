@@ -105,6 +105,76 @@
       "artifacts": [
         "MockDestination"
       ]
+    },
+    "/Users/dan/dev/mole-network/libs/contracts/src/contracts/mocks/MockTellorProxy.sol": {
+      "lastModificationDate": 1678010662377,
+      "contentHash": "49dcfcbd0aeef67d8014ec2602d8191d",
+      "sourceName": "contracts/mocks/MockTellorProxy.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MockTellorProxy"
+      ]
+    },
+    "/Users/dan/dev/mole-network/libs/contracts/src/contracts/mocks/MockMessenger.sol": {
+      "lastModificationDate": 1678014411867,
+      "contentHash": "caa4250f2202d1d532334d9bac33ae40",
+      "sourceName": "contracts/mocks/MockMessenger.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MockMessenger"
+      ]
     }
   }
 }
