@@ -1,29 +1,32 @@
+export type Destination = {
+  chainId: number;
+  address: string;
+  signature: string;
+};
+
 export type ETLSpecConfig = {
-  sources: Array<{
-    type: 'evm';
-    chainId: number;
-    address: string;
-    events: Array<{
-      definition: string;
-      handler: string;
+  sources: {
+    contracts?: Array<{
+      chainId: number;
+      address: string;
+      events: Array<{
+        definition: string;
+        handler: string;
+        destination: Destination;
+      }>;
     }>;
-  }>;
-  destination: {
-    type: 'evm';
-    chainId: number;
-    address: string;
-    signature: string;
+    api?: any;
   };
 };
 
 export type Handler = ({
   error,
-  rawData,
+  data,
   decodedData,
   store,
 }: {
   error: any;
-  rawData: any;
+  data: any;
   decodedData: any;
   store: Map<string, any>;
 }) => any;

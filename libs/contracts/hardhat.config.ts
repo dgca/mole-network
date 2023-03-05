@@ -12,6 +12,10 @@ const networks = (() => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       accounts: [process.env.SCRIBE_DEPLOYER_PK!],
     },
+    base: {
+      url: "https://goerli.base.org",
+      accounts: [],
+    },
   };
 })();
 

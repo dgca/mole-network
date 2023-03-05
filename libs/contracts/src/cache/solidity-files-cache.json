@@ -2,9 +2,83 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/dan/dev/mole-network/libs/contracts/src/contracts/Scribe.sol": {
-      "lastModificationDate": 1677918435110,
-      "contentHash": "0c0923477cd7beb9a4ff60a0b918a42a",
+      "lastModificationDate": 1677967929065,
+      "contentHash": "c65d0893905879fde0f3485cfa905095",
       "sourceName": "contracts/Scribe.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Scribe"
+      ]
+    },
+    "/Users/dan/dev/mole-network/libs/contracts/src/contracts/mocks/MockUniswapDestination.sol": {
+      "lastModificationDate": 1677975514243,
+      "contentHash": "55b6dd8272a3630fcf44e003dac73715",
+      "sourceName": "contracts/mocks/MockUniswapDestination.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MockUniswapDestination"
+      ]
+    },
+    "/Users/dan/dev/mole-network/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1677906264783,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "sourceName": "hardhat/console.sol",
       "solcConfig": {
         "version": "0.8.17",
         "settings": {
@@ -30,10 +104,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.9"
+        ">= 0.4.22 <0.9.0"
       ],
       "artifacts": [
-        "Scribe"
+        "console"
       ]
     }
   }

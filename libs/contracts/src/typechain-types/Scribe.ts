@@ -28,7 +28,7 @@ export interface ScribeInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "removeReporter(address)": FunctionFragment;
     "reporters(address)": FunctionFragment;
-    "submitValue(address,bytes4,bytes)": FunctionFragment;
+    "submitValue(address,string,bytes)": FunctionFragment;
   };
 
   getFunction(
@@ -57,7 +57,7 @@ export interface ScribeInterface extends utils.Interface {
     functionFragment: "submitValue",
     values: [
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>,
       PromiseOrValue<BytesLike>
     ]
   ): string;
@@ -126,7 +126,7 @@ export interface Scribe extends BaseContract {
 
     submitValue(
       _target: PromiseOrValue<string>,
-      _selector: PromiseOrValue<BytesLike>,
+      _selector: PromiseOrValue<string>,
       _data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -151,7 +151,7 @@ export interface Scribe extends BaseContract {
 
   submitValue(
     _target: PromiseOrValue<string>,
-    _selector: PromiseOrValue<BytesLike>,
+    _selector: PromiseOrValue<string>,
     _data: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -176,7 +176,7 @@ export interface Scribe extends BaseContract {
 
     submitValue(
       _target: PromiseOrValue<string>,
-      _selector: PromiseOrValue<BytesLike>,
+      _selector: PromiseOrValue<string>,
       _data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -204,7 +204,7 @@ export interface Scribe extends BaseContract {
 
     submitValue(
       _target: PromiseOrValue<string>,
-      _selector: PromiseOrValue<BytesLike>,
+      _selector: PromiseOrValue<string>,
       _data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -230,7 +230,7 @@ export interface Scribe extends BaseContract {
 
     submitValue(
       _target: PromiseOrValue<string>,
-      _selector: PromiseOrValue<BytesLike>,
+      _selector: PromiseOrValue<string>,
       _data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

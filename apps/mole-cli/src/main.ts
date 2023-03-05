@@ -1,7 +1,7 @@
 import Web3 from 'web3';
-import { ETLSpec } from './types';
+import { Destination, ETLSpec } from './types';
 
-import mockETLSpec from './mockETLSpec';
+import mockETLSpec from './ETLSpecs/mockSpec';
 import { parseEventDefiniton, initWeb3 } from './utils';
 
 import { typechain } from '@mole-network/contracts';
@@ -14,13 +14,13 @@ const {
 } = initWeb3();
 
 class Digger {
-  web3Connections: Record<number, Web3> = {};
   spec: ETLSpec;
   store = new Map<string, any>();
+  web3Connections: Record<string, Web3> = {};
 
   constructor(spec: ETLSpec) {
     this.spec = spec;
-    spec.config.sources.forEach((source) => {
+    spec.config.sources.contracts?.forEach((source) => {
       if (!process.env[`RPC_WSS_CHAIN_${source.chainId}`]) {
         throw new Error(
           `Missing RPC_WSS_CHAIN_${source.chainId} environment variable`
@@ -36,7 +36,12 @@ class Digger {
   }
 
   start() {
-    this.spec.config.sources.forEach((source) => {
+    this.setupContractListeners();
+    this.setupApiListeners();
+  }
+
+  setupContractListeners() {
+    this.spec.config.sources.contracts?.forEach((source) => {
       source.events.forEach((event) => {
         const { topic, parameters, indexed } = parseEventDefiniton(
           event.definition
@@ -55,15 +60,15 @@ class Digger {
               indexed ? data.topics.slice(1) : data.topics
             );
 
-            const { payload } = mockETLSpec.handlers[event.handler]({
+            const handlerResponse = mockETLSpec.handlers[event.handler]({
               error,
-              rawData: data,
+              data,
               decodedData: decoded,
               store: this.store,
             });
 
-            if (payload) {
-              this.sendToScribe(payload);
+            if (handlerResponse?.payload) {
+              this.sendToScribe(handlerResponse.payload, event.destination);
             }
           }
         );
@@ -71,9 +76,39 @@ class Digger {
     });
   }
 
-  async sendToScribe(payload) {
-    console.log({ payload });
-    const chainId = this.spec.config.destination.chainId;
+  setupApiListeners() {
+    this.spec.config.sources.api?.forEach((source) => {
+      const { type, url, handler, rate, destination } = source;
+      if (type !== 'GET') {
+        throw new Error(`Unsupported API type ${type}`);
+      }
+
+      const doFetch = async () => {
+        const response = await fetch(url);
+        const data = await response.json();
+        const handlerResponse = mockETLSpec.handlers[handler]({
+          error: null,
+          data,
+          decodedData: null,
+          store: this.store,
+        });
+
+        if (handlerResponse?.payload) {
+          this.sendToScribe(handlerResponse.payload, destination);
+        }
+      };
+
+      doFetch();
+
+      setInterval(doFetch, rate);
+    });
+  }
+
+  async sendToScribe(payload, destination: Destination) {
+    console.log('sendToScribe', destination, payload);
+
+    return;
+    const chainId = destination.chainId;
     const sendingAccount = ACCOUNT_BY_CHAIN_ID[chainId];
     const scribeAddress = SCRIBE_CONTRACT_BY_CHAIN_ID[chainId];
 
@@ -91,11 +126,7 @@ class Digger {
       await typechain.Scribe__factory.connect(
         scribeAddress,
         PROVIDER_BY_CHAIN_ID[chainId].getSigner(sendingAccount.address)
-      ).submitValue(
-        this.spec.config.destination.address,
-        this.spec.config.destination.signature,
-        payload
-      );
+      ).submitValue(destination.address, destination.signature, payload);
     } catch (error) {
       console.log(error);
     }

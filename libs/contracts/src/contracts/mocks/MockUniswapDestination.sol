@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
+import "hardhat/console.sol";
 
 struct Payload {
   uint256 calledCount;
@@ -10,17 +11,20 @@ struct Payload {
 
 contract MockUniswapDestination {
   address public scribe;
-  Payload public value;
+  Payload public payload;
+  uint256 public ethPriceInUsd;
 
   constructor(address _scribe) {
     scribe = _scribe;
   }
 
-  function handleReceive(bytes calldata _data) external {
-    if (msg.sender != scribe) {
+  modifier onlyScribe() {
+    if (msg.sender != scribe)
       revert("MockDestination: Only scribe can call this function");
-    }
+    _;
+  }
 
+  function handleReceive(bytes calldata _data) external onlyScribe {
     (
       uint256 _calledCount,
       uint256 _blockNumber,
@@ -28,13 +32,35 @@ contract MockUniswapDestination {
       int256 _amount1
     ) = abi.decode(_data, (uint256, uint256, int256, int256));
 
-    Payload memory payload = Payload({
+    Payload memory nextPayload = Payload({
       calledCount: _calledCount,
       blockNumber: _blockNumber,
       amount0: _amount0,
       amount1: _amount1
     });
 
-    value = payload;
+    payload = nextPayload;
+  }
+
+  function handleWebApi(bytes calldata _data) external onlyScribe {
+    uint256 _ethPriceInUsd = abi.decode(_data, (uint256));
+    ethPriceInUsd = _ethPriceInUsd;
+  }
+
+  function getPayload()
+    external
+    view
+    returns (uint256, uint256, int256, int256)
+  {
+    return (
+      payload.calledCount,
+      payload.blockNumber,
+      payload.amount0,
+      payload.amount1
+    );
+  }
+
+  function getEthPriceInUsd() external view returns (uint256) {
+    return ethPriceInUsd;
   }
 }
