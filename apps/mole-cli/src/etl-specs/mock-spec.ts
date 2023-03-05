@@ -35,7 +35,7 @@ export const config: ETLSpecConfig = {
     api: [
       {
         type: 'GET',
-        url: 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
+        url: 'https://api.reservoir.tools/stats/v2?collection=0x5180db8f5c931aae63c74266b211f580155ecac8',
         handler: 'handleApi',
         rate: 10 * 60 * 1000,
         destination: {
@@ -73,11 +73,11 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
 };
 
 const handleApi: Handler = ({ data }) => {
-  if ('error_code' in data.status) {
-    return;
-  }
-  const ethInUsd = parseUnits(data.ethereum.usd.toString(), 18);
-  const payload = ethers.utils.defaultAbiCoder.encode(['uint256'], [ethInUsd]);
+  console.log('Crypto Coven stats:', data);
+  const payload = ethers.utils.defaultAbiCoder.encode(
+    ['uint256'],
+    [data.stats.onSaleCount]
+  );
 
   return {
     payload,
