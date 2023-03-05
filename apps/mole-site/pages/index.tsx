@@ -1,5 +1,6 @@
 import {
   Box,
+  Code,
   Container,
   Heading,
   useColorModeValue,
@@ -80,15 +81,10 @@ export function Index() {
           </Box>
           <VStack alignItems="stretch" justifyContent="center">
             <Text fontSize={heroTextSize} mb="4">
-              Mole Network is a interchain, cross-chain, and cross-network
-              communication system. It lets you capture, manipulate, and store
-              event data in whatever way you want.
-            </Text>
-            <Text fontSize={heroTextSize}>
-              Use the Mole Network to write off-chain data directly to your
-              contract, to transform on-chain data in a cheap and efficient way,
-              or to build a communication layer between your cross-chain
-              application.
+              Mole Network is an interchain, cross-chain, and cross-network
+              communication system that lets developers capture, manipulate, and
+              store event data in a number of ways. It can act as an oracle,
+              indexer, cross-chain bridge, and more.
             </Text>
           </VStack>
         </Stack>
@@ -108,28 +104,28 @@ export function Index() {
                 Consumers
               </Heading>
               <Text fontSize="lg">
-                Mole Network lets users who need data from on or more on and
+                Mole Network lets users who need data from one or more on and
                 off-chain sources get that data, transform it in whatever way
                 they want, and send that transformed data to a destination which
                 can be on-chain and (soon to be) off-chain. Let&apos;s call
                 these user types Consumers.
               </Text>
               <Text fontSize="lg">
-                Consumers create an ETL (Extract, Transform, Load) Spec which
-                describes what data sources to pull data from, what functions to
-                run that data through, and which destinations the output should
-                be sent to. Data sources and destinations will include an
-                expanding list of items, as the system is flexible enough for
-                new items to be added easily.
+                Consumers create an ETL (Extract, Transform, Load) spec which
+                describes what data sources to pull from, what functions to run
+                that data through, and which destinations the output should be
+                sent to. Data sources and destinations will include an expanding
+                list of items, as the system is flexible enough for new items to
+                be added easily.
               </Text>
               <Text fontSize="lg">
-                At the current time, the sources can be events emitted on any
-                EVM chain, as well as any web2 API endpoint.
+                Data sources can be events emitted on any EVM chain, as well as
+                any web2 API endpoint.
               </Text>
               <Text fontSize="lg">
-                Currently, destinations can be any contract on any EVM chain. In
-                the future, that can expand to anything that can receive a
-                network request, including web2 endpoints, and non-EVM chains.
+                Destinations can be any contract on any EVM chain. In the
+                future, this could expand to anything that can receive a network
+                request, including web2 endpoints, and non-EVM chains.
               </Text>
 
               <Spacer />
@@ -138,11 +134,8 @@ export function Index() {
                 Data Reporters
               </Heading>
               <Text fontSize="lg">
-                Data Reporters are the ones who fulfill Consumers&apos;
-                requests. Consumers run a program that monitors the data
-                sources, and when they receive relevant data, they run the data
-                through the Consumer&apos;s ETL spec, and write the result to
-                its destination.
+                Data Reporters fulfill Consumers&apos; ETL specifications by
+                providing network capacity via the <Code>MoleNet CLI</Code>.
               </Text>
 
               <Spacer />
@@ -275,14 +268,12 @@ export function Index() {
               <Spacer />
 
               <Heading as="h3" size="lg" color={h3Color}>
-                The Mole Network CLI
+                The MoleNet CLI
               </Heading>
               <Text fontSize="lg">
-                The CLI is a tool that Data Reporters run. It consumes ETL
-                Specs, which starts a process where the data sources are
-                monitored, and when data source events happen, the appropriate
-                transformation function is run, and data is optionally returned
-                which, if-present, will be written to a destination.
+                The CLI is a tool utilized by Data Reporters to provide network
+                capacity to MoleNet. The CLI enables Data Reporters to fulfill
+                ETL Specs provided by Consumers.
               </Text>
 
               <Spacer />
@@ -293,9 +284,10 @@ export function Index() {
               <Text fontSize="lg">
                 ETL Specs are a piece of code which defines the sources,
                 transformations, and destinations that a Consumer would like to
-                be run so that they can get the data they need. Because they are
-                fully written in code, there is no ambiguity about what the
-                Consumer wants to happen.
+                be run so that they can get the data they need. Specs are
+                currently standalone JavaScript modules, but this is likely to
+                change in the future as MoleNet moves through and beyond Alpha
+                (re: security/scalability concerns).
               </Text>
 
               <Spacer />
@@ -305,10 +297,11 @@ export function Index() {
               </Heading>
               <Text fontSize="lg">
                 For data whose destination is on-chain, the data is sent to a
-                Scribe contract. The Scribe receives the data, as well as the
-                contract address it should be headed to, and the function which
-                should receive the data. It&apos;s up to the Consumer to ensure
-                that function handles receiving the data in the appropriate way.
+                Scribe contract. The Scribe receives transformed data, as well
+                as the contract address it should be headed to, and the function
+                which should receive the data. It&apos;s up to the Consumer to
+                ensure that function handles receiving the data in the
+                appropriate way.
               </Text>
             </Stack>
           </Stack>
