@@ -15,9 +15,11 @@ import Image from 'next/image';
 import { NavBar } from '../components/NavBar/NavBar';
 
 export function Index() {
-  const h1Color = useColorModeValue('purple.400', 'purple.300');
-  const h2Color = useColorModeValue('green.700', '#E2EF70');
-  const h3Color = useColorModeValue('purple.500', '#E88D67');
+  const h1Color = useColorModeValue('purple.500', 'purple.300');
+  const h2Color = useColorModeValue('purple.500', '#E2EF70');
+  const h3Color = useColorModeValue('green.600', '#E88D67');
+  const boxShadowColor = useColorModeValue('#4FD1C5', '#4FD1C5');
+
   const imageSize = useBreakpointValue({
     base: 200,
     lg: 350,
@@ -62,7 +64,7 @@ export function Index() {
         >
           <Box
             style={{
-              boxShadow: '-6px 6px 8px #ddc1ff17',
+              boxShadow: `-8px 8px 0px ${boxShadowColor}`,
             }}
             height={imageSize}
             width={imageSize}

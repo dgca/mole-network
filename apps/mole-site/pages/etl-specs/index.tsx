@@ -12,8 +12,8 @@ import { NavBar } from '../../components/NavBar/NavBar';
 import { CodeBlock, dracula } from 'react-code-blocks';
 
 export function Index() {
-  const h1Color = useColorModeValue('purple.400', 'purple.300');
-  const h2Color = useColorModeValue('green.700', '#E2EF70');
+  const h1Color = useColorModeValue('purple.500', 'purple.300');
+  const h2Color = useColorModeValue('purple.500', '#E2EF70');
   return (
     <Box
       py={12}
