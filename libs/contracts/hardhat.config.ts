@@ -21,6 +21,12 @@ const networks = (() => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       accounts: [process.env.SCRIBE_DEPLOYER_PK!],
     },
+    chiado: {
+      url: process.env.RPC_HTTP_CHAIN_10200,
+      gasPrice: 1000000000,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      accounts: [process.env.SCRIBE_DEPLOYER_PK!],
+    },
   };
 })();
 

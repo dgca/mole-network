@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as mocks from "./mocks";
+export * as vendor from "./vendor";
 export { Scribe__factory } from "./Scribe__factory";

@@ -3,8 +3,12 @@
 /* eslint-disable */
 import type * as mocks from "./mocks";
 export type { mocks };
+import type * as vendor from "./vendor";
+export type { vendor };
 export type { Scribe } from "./Scribe";
 export * as factories from "./factories";
+export type { MockChiadoTellorReader } from "./mocks/MockChiadoTellorReader";
+export { MockChiadoTellorReader__factory } from "./factories/mocks/MockChiadoTellorReader__factory";
 export type { MockDestination } from "./mocks/MockDestination";
 export { MockDestination__factory } from "./factories/mocks/MockDestination__factory";
 export type { MockMessenger } from "./mocks/MockMessenger";
@@ -12,3 +16,21 @@ export { MockMessenger__factory } from "./factories/mocks/MockMessenger__factory
 export type { MockTellorProxy } from "./mocks/MockTellorProxy";
 export { MockTellorProxy__factory } from "./factories/mocks/MockTellorProxy__factory";
 export { Scribe__factory } from "./factories/Scribe__factory";
+export type { IERC20 } from "./vendor/tellor/iface/IERC20";
+export { IERC20__factory } from "./factories/vendor/tellor/iface/IERC20__factory";
+export type { IERC2362 } from "./vendor/tellor/iface/IERC2362";
+export { IERC2362__factory } from "./factories/vendor/tellor/iface/IERC2362__factory";
+export type { IMappingContract } from "./vendor/tellor/iface/IMappingContract";
+export { IMappingContract__factory } from "./factories/vendor/tellor/iface/IMappingContract__factory";
+export type { Autopay } from "./vendor/tellor/iface/ITellor.sol/Autopay";
+export { Autopay__factory } from "./factories/vendor/tellor/iface/ITellor.sol/Autopay__factory";
+export type { ITellor } from "./vendor/tellor/iface/ITellor.sol/ITellor";
+export { ITellor__factory } from "./factories/vendor/tellor/iface/ITellor.sol/ITellor__factory";
+export type { BenchUsingTellor } from "./vendor/tellor/mocks/BenchUsingTellor";
+export { BenchUsingTellor__factory } from "./factories/vendor/tellor/mocks/BenchUsingTellor__factory";
+export type { MappingContractExample } from "./vendor/tellor/mocks/MappingContractExample";
+export { MappingContractExample__factory } from "./factories/vendor/tellor/mocks/MappingContractExample__factory";
+export type { TellorPlayground } from "./vendor/tellor/TellorPlayground";
+export { TellorPlayground__factory } from "./factories/vendor/tellor/TellorPlayground__factory";
+export type { UsingTellor } from "./vendor/tellor/UsingTellor";
+export { UsingTellor__factory } from "./factories/vendor/tellor/UsingTellor__factory";

@@ -22,7 +22,7 @@ export const config: ETLSpecConfig = {
             `,
             handler: 'handleReport',
             destination: {
-              chainId: 80001,
+              chainId: 10200,
               // MockTellorProxy
               address: '0x8A4FB88FD6f885eDB4f43621940CC3B85439d619',
               signature: 'handleTellorData(bytes)',
@@ -40,21 +40,20 @@ const handleReport: Handler = ({ error, decodedData }) => {
   }
 
   const queryData = ethers.utils.defaultAbiCoder.encode(
-    ['string', 'bytes'],
-    [
-      'MockTellorQuery',
-      ethers.utils.defaultAbiCoder.encode(
-        ['uint256', 'address'],
-        [decodedData._time, decodedData._reporter]
-      ),
-    ]
+    ['string'],
+    ['MockTellorQuery']
   );
 
   const queryId = ethers.utils.keccak256(queryData);
 
+  const tellorValue = ethers.utils.defaultAbiCoder.encode(
+    ['uint256'],
+    [decodedData._time]
+  );
+
   const payload = ethers.utils.defaultAbiCoder.encode(
     ['bytes32', 'bytes', 'uint256', 'bytes'],
-    [queryId, 0, 0, queryData]
+    [queryId, tellorValue, 0, queryData]
   );
 
   return {

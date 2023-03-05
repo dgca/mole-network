@@ -53,14 +53,6 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
     return;
   }
 
-  // Limit writes to every 10 minutes
-  const lastHandleSwapWrite = store.get('lastHandleSwapWrite') || 0;
-  const now = new Date().valueOf();
-  if (now - lastHandleSwapWrite < 10 * 60 * 1000) {
-    return;
-  }
-  store.set('lastHandleSwapWrite', now);
-
   const calledCount = store.get('count') || 1;
   store.set('count', calledCount + 1);
 

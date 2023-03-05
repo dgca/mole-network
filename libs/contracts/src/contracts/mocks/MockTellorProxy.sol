@@ -5,9 +5,11 @@ error SubmitValueFailed();
 
 contract MockTellorProxy {
   address public scribe;
+  address public tellor;
 
-  constructor(address _scribe) {
+  constructor(address _scribe, address _tellor) {
     scribe = _scribe;
+    tellor = _tellor;
   }
 
   modifier onlyScribe() {

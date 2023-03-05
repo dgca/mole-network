@@ -26,10 +26,11 @@ export interface MockTellorProxyInterface extends utils.Interface {
   functions: {
     "handleTellorData(bytes)": FunctionFragment;
     "scribe()": FunctionFragment;
+    "tellor()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "handleTellorData" | "scribe"
+    nameOrSignatureOrTopic: "handleTellorData" | "scribe" | "tellor"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -37,12 +38,14 @@ export interface MockTellorProxyInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "scribe", values?: undefined): string;
+  encodeFunctionData(functionFragment: "tellor", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "handleTellorData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "scribe", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "tellor", data: BytesLike): Result;
 
   events: {};
 }
@@ -80,6 +83,8 @@ export interface MockTellorProxy extends BaseContract {
     ): Promise<ContractTransaction>;
 
     scribe(overrides?: CallOverrides): Promise<[string]>;
+
+    tellor(overrides?: CallOverrides): Promise<[string]>;
   };
 
   handleTellorData(
@@ -89,6 +94,8 @@ export interface MockTellorProxy extends BaseContract {
 
   scribe(overrides?: CallOverrides): Promise<string>;
 
+  tellor(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     handleTellorData(
       _data: PromiseOrValue<BytesLike>,
@@ -96,6 +103,8 @@ export interface MockTellorProxy extends BaseContract {
     ): Promise<void>;
 
     scribe(overrides?: CallOverrides): Promise<string>;
+
+    tellor(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
@@ -107,6 +116,8 @@ export interface MockTellorProxy extends BaseContract {
     ): Promise<BigNumber>;
 
     scribe(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tellor(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -116,5 +127,7 @@ export interface MockTellorProxy extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     scribe(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tellor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
