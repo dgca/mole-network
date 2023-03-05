@@ -5,6 +5,8 @@ import type * as mocks from "./mocks";
 export type { mocks };
 export type { Scribe } from "./Scribe";
 export * as factories from "./factories";
+export type { MockDestination } from "./mocks/MockDestination";
+export { MockDestination__factory } from "./factories/mocks/MockDestination__factory";
 export type { MockUniswapDestination } from "./mocks/MockUniswapDestination";
 export { MockUniswapDestination__factory } from "./factories/mocks/MockUniswapDestination__factory";
 export { Scribe__factory } from "./factories/Scribe__factory";

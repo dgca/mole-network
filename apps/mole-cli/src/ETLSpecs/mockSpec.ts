@@ -37,7 +37,7 @@ const config: ETLSpecConfig = {
         type: 'GET',
         url: 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
         handler: 'handleApi',
-        rate: 60 * 1000,
+        rate: 10 * 60 * 1000,
         destination: {
           chainId: 80001,
           address: '',
@@ -53,7 +53,13 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
     return;
   }
 
-  console.log(decodedData);
+  // Limit writes to every 10 minutes
+  const lastHandleSwapWrite = store.get('lastHandleSwapWrite') || 0;
+  const now = new Date().valueOf();
+  if (now - lastHandleSwapWrite < 10 * 60 * 1000) {
+    return;
+  }
+  store.set('lastHandleSwapWrite', now);
 
   const calledCount = store.get('count') || 1;
   store.set('count', calledCount + 1);
@@ -72,17 +78,7 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
   };
 };
 
-const handleApi: Handler = ({ data, store }) => {
-  const lastValue = store.get('ethInUsd') || 0;
-  const nextValue = data.ethereum.usd;
-  const difference = Math.abs(lastValue - nextValue);
-
-  if ((difference / lastValue) * 100 < 1) {
-    return;
-  }
-
-  store.set('ethInUsd', nextValue);
-
+const handleApi: Handler = ({ data }) => {
   const ethInUsd = parseUnits(data.ethereum.usd.toString(), 18);
   const payload = ethers.utils.defaultAbiCoder.encode(['uint256'], [ethInUsd]);
 

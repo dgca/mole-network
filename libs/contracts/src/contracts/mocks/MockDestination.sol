@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
-import "hardhat/console.sol";
 
 struct Payload {
   uint256 calledCount;
@@ -9,10 +8,19 @@ struct Payload {
   int256 amount1;
 }
 
-contract MockUniswapDestination {
+contract MockDestination {
   address public scribe;
   Payload public payload;
   uint256 public ethPriceInUsd;
+
+  event PayloadReceived(
+    uint256 calledCount,
+    uint256 blockNumber,
+    int256 amount0,
+    int256 amount1
+  );
+
+  event WebAPIReceived(uint256 ethPriceInUsd);
 
   constructor(address _scribe) {
     scribe = _scribe;
@@ -39,11 +47,21 @@ contract MockUniswapDestination {
       amount1: _amount1
     });
 
+    emit PayloadReceived(
+      nextPayload.calledCount,
+      nextPayload.blockNumber,
+      nextPayload.amount0,
+      nextPayload.amount1
+    );
+
     payload = nextPayload;
   }
 
   function handleWebApi(bytes calldata _data) external onlyScribe {
     uint256 _ethPriceInUsd = abi.decode(_data, (uint256));
+
+    emit WebAPIReceived(_ethPriceInUsd);
+
     ethPriceInUsd = _ethPriceInUsd;
   }
 

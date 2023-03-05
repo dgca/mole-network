@@ -1,7 +1,9 @@
-import { ethers } from 'hardhat';
+import { ethers } from "hardhat";
+
+// nx run contracts:run -- --network localhost src/scripts/deployScribe.ts
 
 async function main() {
-  const Scribe = await ethers.getContractFactory('Scribe');
+  const Scribe = await ethers.getContractFactory("Scribe");
   const scribe = await Scribe.deploy();
 
   await scribe.deployed();
