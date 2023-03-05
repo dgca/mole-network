@@ -24,7 +24,7 @@ export const config: ETLSpecConfig = {
             destination: {
               chainId: 10200,
               // MockTellorProxy
-              address: '0x8A4FB88FD6f885eDB4f43621940CC3B85439d619',
+              address: '0x6Bfb544610053c7BFb20aa3037A4CC436a139598',
               signature: 'handleTellorData(bytes)',
             },
           },
