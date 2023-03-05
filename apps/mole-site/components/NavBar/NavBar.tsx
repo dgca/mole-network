@@ -1,5 +1,11 @@
-import { Box, HStack, IconButton, useColorMode } from '@chakra-ui/react';
+import {
+  HStack,
+  IconButton,
+  useColorMode,
+  Link as ChakraLink,
+} from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 export function ToggleColorMode() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -14,8 +20,22 @@ export function ToggleColorMode() {
 
 export function NavBar() {
   return (
-    <HStack justifyContent="space-between">
-      <Box />
+    <HStack justifyContent="space-between" mb="2rem">
+      <HStack gap={8}>
+        <Link href="/">
+          <ChakraLink fontSize="lg">Home</ChakraLink>
+        </Link>
+        <Link href="/etl-specs">
+          <ChakraLink fontSize="lg">ETL Specs</ChakraLink>
+        </Link>
+        <Link
+          href="https://github.com/dgca/mole-network"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <ChakraLink fontSize="lg">Github</ChakraLink>
+        </Link>
+      </HStack>
       <ToggleColorMode />
     </HStack>
   );

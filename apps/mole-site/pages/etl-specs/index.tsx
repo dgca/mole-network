@@ -21,7 +21,7 @@ export function Index() {
         base: 4,
         md: 8,
       }}
-      pb={40}
+      mb="8rem"
     >
       <Container maxW="container.xl" mb="6rem">
         <NavBar />
