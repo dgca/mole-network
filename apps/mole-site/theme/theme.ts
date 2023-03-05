@@ -1,7 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
-import '@fontsource/playfair-display';
-import '@fontsource/source-sans-pro';
 import '@fontsource/noto-serif-display';
 import '@fontsource/libre-baskerville';
 
@@ -11,7 +9,6 @@ export const theme = extendTheme({
   fonts: {
     heading: `'Noto Serif Display', serif`,
     body: `'Libre Baskerville', sans-serif`,
-    code: 'monospace',
   },
   components: {
     Heading: {

@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { NavBar } from '../components/NavBar/NavBar';
+import { Footer } from '../components/Footer/Footer';
 
 export function Index() {
   const h1Color = useColorModeValue('purple.500', 'purple.300');
@@ -42,7 +43,6 @@ export function Index() {
         base: 4,
         md: 8,
       }}
-      mb="8rem"
     >
       <Container maxW="container.xl">
         <NavBar />
@@ -306,6 +306,7 @@ export function Index() {
             </Stack>
           </Stack>
         </Container>
+        <Footer />
       </Container>
     </Box>
   );

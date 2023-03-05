@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { NavBar } from '../../components/NavBar/NavBar';
 import { CodeBlock, dracula } from 'react-code-blocks';
+import { Footer } from '../../components/Footer/Footer';
 
 export function Index() {
   const h1Color = useColorModeValue('purple.500', 'purple.300');
@@ -21,9 +22,8 @@ export function Index() {
         base: 4,
         md: 8,
       }}
-      mb="8rem"
     >
-      <Container maxW="container.xl" mb="6rem">
+      <Container maxW="container.xl">
         <NavBar />
         <Heading
           as="h1"
@@ -267,6 +267,7 @@ export const handlers: Handlers = {
             </Stack>
           </Stack>
         </Container>
+        <Footer />
       </Container>
     </Box>
   );
