@@ -21,14 +21,31 @@ export function ToggleColorMode() {
 export function NavBar() {
   return (
     <HStack justifyContent="space-between" mb="2rem">
-      <HStack gap={8}>
+      <HStack
+        gap={{
+          base: 4,
+          md: 8,
+        }}
+      >
         <Link href="/">
-          <ChakraLink as="span" fontSize="lg">
+          <ChakraLink
+            as="span"
+            fontSize={{
+              base: 'md',
+              md: 'lg',
+            }}
+          >
             Home
           </ChakraLink>
         </Link>
         <Link href="/etl-specs">
-          <ChakraLink as="span" fontSize="lg">
+          <ChakraLink
+            as="span"
+            fontSize={{
+              base: 'md',
+              md: 'lg',
+            }}
+          >
             ETL Specs
           </ChakraLink>
         </Link>
@@ -37,7 +54,13 @@ export function NavBar() {
           target="_blank"
           rel="noreferrer"
         >
-          <ChakraLink as="span" fontSize="lg">
+          <ChakraLink
+            as="span"
+            fontSize={{
+              base: 'md',
+              md: 'lg',
+            }}
+          >
             Github
           </ChakraLink>
         </Link>
