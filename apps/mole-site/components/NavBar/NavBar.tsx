@@ -23,17 +23,23 @@ export function NavBar() {
     <HStack justifyContent="space-between" mb="2rem">
       <HStack gap={8}>
         <Link href="/">
-          <ChakraLink fontSize="lg">Home</ChakraLink>
+          <ChakraLink as="span" fontSize="lg">
+            Home
+          </ChakraLink>
         </Link>
         <Link href="/etl-specs">
-          <ChakraLink fontSize="lg">ETL Specs</ChakraLink>
+          <ChakraLink as="span" fontSize="lg">
+            ETL Specs
+          </ChakraLink>
         </Link>
         <Link
           href="https://github.com/dgca/mole-network"
           target="_blank"
           rel="noreferrer"
         >
-          <ChakraLink fontSize="lg">Github</ChakraLink>
+          <ChakraLink as="span" fontSize="lg">
+            Github
+          </ChakraLink>
         </Link>
       </HStack>
       <ToggleColorMode />

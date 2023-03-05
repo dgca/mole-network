@@ -1,7 +1,5 @@
 import Web3 from 'web3';
 import { Destination, ETLSpec } from './types';
-
-import * as mockETLSpec from './ETLSpecs/mockSpec';
 import { parseEventDefiniton, initWeb3 } from './utils';
 
 import { typechain } from '@mole-network/contracts';
@@ -60,7 +58,7 @@ class Digger {
               indexed ? data.topics.slice(1) : data.topics
             );
 
-            const handlerResponse = mockETLSpec.handlers[event.handler]({
+            const handlerResponse = this.spec.handlers[event.handler]({
               error,
               data,
               decodedData: decoded,
@@ -86,7 +84,7 @@ class Digger {
       const doFetch = async () => {
         const response = await fetch(url);
         const data = await response.json();
-        const handlerResponse = mockETLSpec.handlers[handler]({
+        const handlerResponse = this.spec.handlers[handler]({
           error: null,
           data,
           decodedData: null,
@@ -105,9 +103,6 @@ class Digger {
   }
 
   async sendToScribe(payload, destination: Destination) {
-    console.log('sendToScribe', destination, payload);
-
-    return;
     const chainId = destination.chainId;
     const sendingAccount = ACCOUNT_BY_CHAIN_ID[chainId];
     const scribeAddress = SCRIBE_CONTRACT_BY_CHAIN_ID[chainId];
@@ -141,8 +136,17 @@ class Digger {
  / /  / / /_/ / /___/ /___/ /|  / /___  / /     ( ^.^ ) 
 /_/  /_/\\____/_____/_____/_/ |_/_____/ /_/      ( > < )
 `);
+
+  const specArg = process.argv[2];
+  if (!specArg.startsWith('--spec=')) {
+    throw new Error('Missing --spec argument');
+  }
+
+  const specName = specArg.split('=')[1];
+  const specModule = await require(`./etl-specs/${specName}`);
+
   try {
-    const digger = new Digger(mockETLSpec);
+    const digger = new Digger(specModule);
     digger.start();
   } catch (e) {
     console.log(e);
