@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { ETLSpecConfig, ETLSpec, Handler } from '../types';
+import { ETLSpecConfig, Handler, Handlers } from '../types';
 
-const config: ETLSpecConfig = {
+export const config: ETLSpecConfig = {
   sources: {
     contracts: [
       {
@@ -87,12 +87,7 @@ const handleApi: Handler = ({ data }) => {
   };
 };
 
-const spec: ETLSpec = {
-  config,
-  handlers: {
-    handleSwap,
-    handleApi,
-  },
+export const handlers: Handlers = {
+  handleSwap,
+  handleApi,
 };
-
-export default spec;

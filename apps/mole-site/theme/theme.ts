@@ -11,6 +11,7 @@ export const theme = extendTheme({
   fonts: {
     heading: `'Noto Serif Display', serif`,
     body: `'Libre Baskerville', sans-serif`,
+    code: 'monospace',
   },
   components: {
     Heading: {

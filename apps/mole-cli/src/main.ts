@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import { Destination, ETLSpec } from './types';
 
-import mockETLSpec from './ETLSpecs/mockSpec';
+import * as mockETLSpec from './ETLSpecs/mockSpec';
 import { parseEventDefiniton, initWeb3 } from './utils';
 
 import { typechain } from '@mole-network/contracts';

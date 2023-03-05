@@ -31,7 +31,9 @@ export type Handler = ({
   store: Map<string, any>;
 }) => any;
 
+export type Handlers = Record<string, Handler>;
+
 export type ETLSpec = {
   config: ETLSpecConfig;
-  handlers: Record<string, Handler>;
+  handlers: Handlers;
 };
