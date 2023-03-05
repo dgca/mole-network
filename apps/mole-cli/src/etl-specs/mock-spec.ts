@@ -53,6 +53,8 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
     return;
   }
 
+  console.log('Uniswap event:', decodedData);
+
   const calledCount = store.get('count') || 1;
   store.set('count', calledCount + 1);
 
@@ -71,6 +73,9 @@ const handleSwap: Handler = ({ error, data, decodedData, store }) => {
 };
 
 const handleApi: Handler = ({ data }) => {
+  if ('error_code' in data.status) {
+    return;
+  }
   const ethInUsd = parseUnits(data.ethereum.usd.toString(), 18);
   const payload = ethers.utils.defaultAbiCoder.encode(['uint256'], [ethInUsd]);
 
