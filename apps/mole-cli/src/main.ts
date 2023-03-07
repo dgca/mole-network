@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { Destination, ETLSpec } from './types';
+import { ChainDestination, ETLSpec, PostDestination } from './types';
 import { parseEventDefiniton, initWeb3 } from './utils';
 
 import { typechain } from '@mole-network/contracts';
@@ -60,8 +60,14 @@ class Digger {
               store: this.store,
             });
 
-            if (handlerResponse?.payload) {
+            if (
+              handlerResponse?.payload &&
+              event.destination.type === 'chain'
+            ) {
               this.sendToScribe(handlerResponse.payload, event.destination);
+            }
+            if (handlerResponse?.payload && event.destination.type === 'post') {
+              this.sendToPost(handlerResponse.payload, event.destination);
             }
           }
         );
@@ -86,7 +92,10 @@ class Digger {
           store: this.store,
         });
 
-        if (handlerResponse?.payload) {
+        if (handlerResponse?.payload && destination.type === 'chain') {
+          this.sendToScribe(handlerResponse.payload, destination);
+        }
+        if (handlerResponse?.payload && destination.type === 'post') {
           this.sendToScribe(handlerResponse.payload, destination);
         }
       };
@@ -97,7 +106,7 @@ class Digger {
     });
   }
 
-  async sendToScribe(payload, destination: Destination) {
+  async sendToScribe(payload, destination: ChainDestination) {
     console.log('Attempting to scribe...', payload, destination);
 
     const chainId = destination.chainId;
@@ -119,6 +128,27 @@ class Digger {
         scribeAddress,
         scribeWallet
       ).submitValue(destination.address, destination.signature, payload);
+      console.log('Success!');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async sendToPost(payload, destination: PostDestination) {
+    console.log('Attempting to post...', payload, destination);
+
+    try {
+      const response = await fetch(destination.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ payload }),
+      });
+
+      if (!response.ok) {
+        throw response;
+      }
       console.log('Success!');
     } catch (error) {
       console.error(error);

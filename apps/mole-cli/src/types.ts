@@ -1,7 +1,13 @@
-export type Destination = {
+export type ChainDestination = {
+  type: 'chain';
   chainId: number;
   address: string;
   signature: string;
+};
+
+export type PostDestination = {
+  type: 'post';
+  url: string;
 };
 
 export type ETLSpecConfig = {
@@ -12,7 +18,7 @@ export type ETLSpecConfig = {
       events: Array<{
         definition: string;
         handler: string;
-        destination: Destination;
+        destination: ChainDestination | PostDestination;
       }>;
     }>;
     api?: any;

@@ -17,6 +17,7 @@ export const config: ETLSpecConfig = {
             `,
             handler: 'handleMessage',
             destination: {
+              type: 'chain',
               chainId: 8453,
               address: '0xACbab79D1B9832668dBaCE93Bc25675FE0B23169',
               signature: 'handleMessageReceived(bytes)',

@@ -23,26 +23,11 @@ export const config: ETLSpecConfig = {
             `,
             handler: 'handleSwap',
             destination: {
-              type: 'chain',
-              chainId: 8453,
-              address: '0x2FEdc8B2C27Dc2916ecE1dA5c16dC92C9858A767',
-              signature: 'handleReceive(bytes)',
+              type: 'post',
+              url: 'https://maker.ifttt.com/trigger/usdc_weth_swap/json/with/key/j7WkSBlPk2riyrH9yefqPCJGxWuWNSgNL6kl-ReIgFL',
             },
           },
         ],
-      },
-    ],
-    api: [
-      {
-        type: 'GET',
-        url: 'https://api.reservoir.tools/stats/v2?collection=0x5180db8f5c931aae63c74266b211f580155ecac8',
-        handler: 'handleApi',
-        rate: 10 * 60 * 1000,
-        destination: {
-          chainId: 8453,
-          address: '0x2FEdc8B2C27Dc2916ecE1dA5c16dC92C9858A767',
-          signature: 'handleWebApi(bytes)',
-        },
       },
     ],
   },

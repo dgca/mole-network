@@ -22,6 +22,7 @@ export const config: ETLSpecConfig = {
             `,
             handler: 'handleReport',
             destination: {
+              type: 'chain',
               chainId: 10200,
               // MockTellorProxy
               address: '0x6Bfb544610053c7BFb20aa3037A4CC436a139598',
